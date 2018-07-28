@@ -55,8 +55,8 @@
         <category>Material</category>
       </categories>
       <tags>
-        <tag>Reactor</tag>
         <tag>Java</tag>
+        <tag>Reactor</tag>
         <tag>Functional Program</tag>
       </tags>
   </entry>
@@ -115,8 +115,8 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>web</tag>
         <tag>Jsp</tag>
+        <tag>web</tag>
       </tags>
   </entry>
   <entry>

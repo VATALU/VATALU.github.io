@@ -130,9 +130,9 @@
       <category term="Material" scheme="http://yoursite.com/categories/Material/"/>
     
     
-      <category term="Reactor" scheme="http://yoursite.com/tags/Reactor/"/>
-    
       <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+      <category term="Reactor" scheme="http://yoursite.com/tags/Reactor/"/>
     
       <category term="Functional Program" scheme="http://yoursite.com/tags/Functional-Program/"/>
     
@@ -251,9 +251,9 @@
     
       <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
     
-      <category term="web" scheme="http://yoursite.com/tags/web/"/>
-    
       <category term="Jsp" scheme="http://yoursite.com/tags/Jsp/"/>
+    
+      <category term="web" scheme="http://yoursite.com/tags/web/"/>
     
   </entry>
   
