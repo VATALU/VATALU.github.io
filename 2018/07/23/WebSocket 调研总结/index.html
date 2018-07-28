@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Pacifico:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文是将我 confluence 上的文章搬运过来，侧重于前后端实时通讯的横向比较以及 Spring-boot 资源的整理。">
+<meta name="keywords" content="network,WebSocket">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebSocket 调研总结">
+<meta property="og:url" content="http://yoursite.com/2018/07/23/WebSocket 调研总结/index.html">
+<meta property="og:site_name" content="VATALU">
+<meta property="og:description" content="本文是将我 confluence 上的文章搬运过来，侧重于前后端实时通讯的横向比较以及 Spring-boot 资源的整理。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://res.infoq.com/articles/Web-Sockets-Proxy-Servers/en/resources/websockets2.png">
+<meta property="og:updated_time" content="2018-07-26T03:31:50.530Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WebSocket 调研总结">
+<meta name="twitter:description" content="本文是将我 confluence 上的文章搬运过来，侧重于前后端实时通讯的横向比较以及 Spring-boot 资源的整理。">
+<meta name="twitter:image" content="https://res.infoq.com/articles/Web-Sockets-Proxy-Servers/en/resources/websockets2.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="VATALU" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/23/WebSocket 调研总结/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>WebSocket 调研总结 | VATALU</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b484bf6b466e022d7cb1161fde6a0eaf";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">VATALU</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i>归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/WebSocket 调研总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="VATALU">
+      <meta itemprop="description" content="Like a fish out of water">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/30646562?v=4&s=400">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="VATALU">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">WebSocket 调研总结
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-23 12:09:09" itemprop="dateCreated datePublished" datetime="2018-07-23T12:09:09+08:00">2018-07-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-26 11:31:50" itemprop="dateModified" datetime="2018-07-26T11:31:50+08:00">2018-07-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Material/" itemprop="url" rel="index"><span itemprop="name">Material</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- <center> -->
+<div class="note info"><p>本文是将我 confluence 上的文章搬运过来，侧重于前后端实时通讯的横向比较以及 <code>Spring-boot</code> 资源的整理。 </p></div>
+<!-- </center> -->
+<a id="more"></a>
+<h1 id="前后端实时通讯解决方案比较"><a href="#前后端实时通讯解决方案比较" class="headerlink" title="前后端实时通讯解决方案比较"></a>前后端实时通讯解决方案比较</h1><p>Web 为了实现即时通信，有以下几种方案，HTTP short-polling, HTTP long-polling, Streaming, Server-sent Events (SSE), WebSockets。下面会介绍以及比较各种方案的优劣。</p>
+<h2 id="HTTP-short-polling"><a href="#HTTP-short-polling" class="headerlink" title="HTTP short-polling"></a>HTTP short-polling</h2><p>每隔一段时间就自动发出一个 HTTP 请求给服务器。</p>
+<p>这个是最老旧的方式，导致连接数会很多，并且每次发送的请求都会有 HTTP 的 Header，消耗流量。很显然对于服务器的压力大。</p>
+<h2 id="HTTP-long-polling"><a href="#HTTP-long-polling" class="headerlink" title="HTTP long-polling"></a>HTTP long-polling</h2><p>长轮询是对短轮询的改进版，客户端发送 HTTP 给服务器之后，如果没有消息就会阻塞到有消息或者超时了，才会返回给客户端。消息返回之后再建立连接，如此反复。</p>
+<p>在某种程度上减小了网络带宽和 CPU 利用率等问题。这种方式会导致实时性不高，并且网络带宽利用率低的问题也没有从根源上解决。每个 Request 都会带相同的 Header。</p>
+<h2 id="Streaming"><a href="#Streaming" class="headerlink" title="Streaming"></a>Streaming</h2><h3 id="Iframe-Streaming"><a href="#Iframe-Streaming" class="headerlink" title="Iframe Streaming"></a>Iframe Streaming</h3><p>在页面中插入一个隐藏的 iframe, 利用其 src 属性在服务器和客户端之间创建一条长链接，服务器向 iframe 传输数据。</p>
+<p>实现简单，但无法知道连接状态。</p>
+<h3 id="AJAX-multipart-streaming-XHR-Streaming"><a href="#AJAX-multipart-streaming-XHR-Streaming" class="headerlink" title="AJAX multipart streaming (XHR Streaming)"></a>AJAX multipart streaming (XHR Streaming)</h3><p>实现思路：浏览器必须支持 multi-part 标志，客户端通过 AJAX 发出请求 Request，服务器保持住这个连接，然后可以通过 HTTP1.1 的 chunked encoding 机制（分块传输编码）不断 push 数据给客户端,直到 timeout 或者手动断开连接。</p>
+<p>客户端一次连接，服务器数据可多次推送。但是并非所有浏览器都支持 XHR Streaming。</p>
+<h3 id="Flash-Streaming"><a href="#Flash-Streaming" class="headerlink" title="Flash Streaming"></a>Flash Streaming</h3><p>通过内嵌使用了 Socket 类的 Flash 程序，JavaScript 通过调用此 Flash 程序提供的 Socket 接口与服务器端的 Socket 接口进行通信，JavaScript 通过 Flash Socket 接收到服务器端传送的数据。</p>
+<p>缺点很明显，要装 Flash.</p>
+<h2 id="Server-Sent-Events"><a href="#Server-Sent-Events" class="headerlink" title="Server-Sent Events"></a>Server-Sent Events</h2><p>服务器发送事件（SSE）也是 HTML5 公布的一种服务器向浏览器客户端发起数据传输的技术。一旦创建了初始连接，事件流将保持打开状态，直到客户端关闭。该技术通过传统的 HTTP 发送，并具有 WebSockets 缺乏的各种功能，例如自动重新连接、事件 ID 以及发送任意事件的能力。</p>
+<p>SSE 就是利用服务器向客户端声明，接下来要发送的是流信息（streaming），会连续不断地发送过来。这时，客户端不会关闭连接，会一直等着服务器发过来的新的数据流，可以类比视频流。SSE 就是利用这种机制，使用流信息向浏览器推送信息。它基于 HTTP 协议，目前除了 IE/Edge，其他浏览器都支持。</p>
+<p>SSE 是单向通道，只能服务器向浏览器发送，因为流信息本质上就是下载。</p>
+<p>服务器向浏览器发送的 SSE 数据，必须是 UTF-8 编码的文本，具有如下的 HTTP 头信息。</p>
+<pre><code>Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+</code></pre><p>必须将 Content-Type 指定为 event-steam。</p>
+<h3 id="SSE-的优势"><a href="#SSE-的优势" class="headerlink" title="SSE 的优势"></a>SSE 的优势</h3><ul>
+<li>通过简单的 HTTP 传输，而不是自定义协议。</li>
+<li>Can be poly-filled with JS to “backport” SSE to browsers that do not support it yet</li>
+<li><p>支持重连</p>
+<h3 id="SSE-的劣势"><a href="#SSE-的劣势" class="headerlink" title="SSE 的劣势"></a>SSE 的劣势</h3></li>
+<li><p>不支持二进制传输</p>
+</li>
+<li>最大连接限制（每个浏览器仅限 6 个，并且不将会在  Chrome 和 Firefox 中修复）</li>
+<li>单向</li>
+</ul>
+<h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><blockquote>
+<p> WebSocket 是一种在单个 TCP 连接上进行全双工通讯的协议。WebSocket 使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。—— By Wikipedia</p>
+</blockquote>
+<p>过去，创建需要在客户端和服务之间双向通信的web应用，需要通过HTTP来轮询服务器来获取更新然后如果是推送消息则发送另一个请求。这样做会存在一些问题。</p>
+<ul>
+<li>服务器端被迫提供两类接口，一类提供给客户端轮询新消息，一类提供给客户端推送消息给服务器端。</li>
+<li>HTTP协议有较多的额外费用 (overhead)，每次发送消息都会有一个 HTTP header 信息，而且如果不用 Keep-Alive 每次还都要握手。</li>
+<li>客户端的脚本比如JS可能还需要跟踪整个过程，也就是说我发送一个消息后，我可能需要跟踪这个消息的返回。<br>一个简单的办法是使用单个 TCP 连接双向传输。这是为什么提供 WebSocket 协议。与 WebSocket API 结合，它提供了一个替代 HTTP 轮询的方式从 web 页面到远程服务器的双向通信。</li>
+</ul>
+<p>一个简单的办法是使用单个 TCP 连接双向传输。这是为什么提供 WebSocket 协议。与 WebSocket API 结合，它提供了一个替代 HTTP 轮询的方式从 web 页面到远程服务器的双向通信。</p>
+<h2 id="Supported-transports-by-browser-html-served-from-http-or-https"><a href="#Supported-transports-by-browser-html-served-from-http-or-https" class="headerlink" title="Supported transports, by browser (html served from http:// or https://)"></a>Supported transports, by browser (html served from http:// or https://)</h2><table>
+<thead>
+<tr>
+<th><em>Browser</em></th>
+<th><em>Websockets</em></th>
+<th><em>Streaming</em></th>
+<th><em>Polling</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IE 6, 7</td>
+<td>no</td>
+<td>no</td>
+<td>jsonp-polling</td>
+</tr>
+<tr>
+<td>IE 8, 9 (cookies=no)</td>
+<td>no</td>
+<td>xdr-streaming &dagger;</td>
+<td>xdr-polling &dagger;</td>
+</tr>
+<tr>
+<td>IE 8, 9 (cookies=yes)</td>
+<td>no</td>
+<td>iframe-htmlfile</td>
+<td>iframe-xhr-polling</td>
+</tr>
+<tr>
+<td>IE 10</td>
+<td>rfc6455</td>
+<td>xhr-streaming</td>
+<td>xhr-polling</td>
+</tr>
+<tr>
+<td>Chrome 6-13</td>
+<td>hixie-76</td>
+<td>xhr-streaming</td>
+<td>xhr-polling</td>
+</tr>
+<tr>
+<td>Chrome 14+</td>
+<td>hybi-10 / rfc6455</td>
+<td>xhr-streaming</td>
+<td>xhr-polling</td>
+</tr>
+<tr>
+<td>Firefox &lt;10</td>
+<td>no &Dagger;</td>
+<td>xhr-streaming</td>
+<td>xhr-polling</td>
+</tr>
+<tr>
+<td>Firefox 10+</td>
+<td>hybi-10 / rfc6455</td>
+<td>xhr-streaming</td>
+<td>xhr-polling</td>
+</tr>
+<tr>
+<td>Safari 5.x</td>
+<td>hixie-76</td>
+<td>xhr-streaming</td>
+<td>xhr-polling</td>
+</tr>
+<tr>
+<td>Safari 6+</td>
+<td>rfc6455</td>
+<td>xhr-streaming</td>
+<td>xhr-polling</td>
+</tr>
+<tr>
+<td>Opera 10.70+</td>
+<td>no &Dagger;</td>
+<td>iframe-eventsource</td>
+<td>iframe-xhr-polling</td>
+</tr>
+<tr>
+<td>Opera 12.10+</td>
+<td>rfc6455</td>
+<td>xhr-streaming</td>
+<td>xhr-polling</td>
+</tr>
+<tr>
+<td>Konqueror</td>
+<td>no</td>
+<td>no</td>
+<td>jsonp-polling</td>
+</tr>
+</tbody>
+</table>
+<h2 id="WebSocket-vs-SSE"><a href="#WebSocket-vs-SSE" class="headerlink" title="WebSocket vs SSE"></a>WebSocket vs SSE</h2><p>实际上，所有能够用 SSE 实现的都可以用 WebSockets 替代，WebSockets 受到了更多的青睐并且也有更多的浏览器的支持。</p>
+<p>但是 SSE 可以解决一些特定的业务并且后端也容易实现，SSE 也可以通过 JS polyfilled 不支持 SSE 的老浏览器。详见：Modernizr github page</p>
+<p>所以应该对应不同的场景使用不同的技术。</p>
+<p>SSE 使用场景：</p>
+<ul>
+<li>Stock ticker streaming</li>
+<li>twitter feed updating</li>
+<li>Notifications to browser</li>
+</ul>
+<h1 id="WebSocket-Protocol"><a href="#WebSocket-Protocol" class="headerlink" title="WebSocket Protocol"></a>WebSocket Protocol</h1><p>协议全文详见：<a href="https://tools.ietf.org/html/rfc6455" target="_blank" rel="noopener">RFC 6455</a> </p>
+<p>WebSocket 协议主要分为两个部分，一个是握手的规则，另一个是数据传输。</p>
+<h2 id="握手"><a href="#握手" class="headerlink" title="握手"></a>握手</h2><p>客户端发起请求，采用标准的 HTTP 报文，且仅支持 GET 方法，通过 HTTP Upgrade 机制升级协议至 WebSocket。这样的话只要使用 80/443 端口就可以了。</p>
+<ul>
+<li><p>Sec-WebSocket-Version<br>  客户端表明自己想要使用的版本号（一般都是 13 号版本），如果服务器不支持这个版本，则需要返回自己支持的版本。客户端拿到 Response 以后，需要对自己支持的版本号重新握手。这个 header 客户端必须要发送。</p>
+</li>
+<li><p>Sec-WebSocket-Key</p>
+<p>  客户端请求自动生成的一个 key。这个 header 客户端必须要发送。</p>
+</li>
+<li><p>Sec-WebSocket-Accept</p>
+<p>  服务器针对客户端的 Sec-WebSocket-Key 计算的响应值。这个 header 服务端必须要发送。</p>
+</li>
+<li><p>Sec-WebSocket-Protocol</p>
+<p>  用于协商应用子协议:客户端发送支持的协议列表，服务器必须只回应一个协议名。如果服务器一个协议都不能支持，直接握手失败。客户端可以不发送子协议，但是一旦发送，服务器无法支持其中任意一个都会导致握手失败。这个 header 客户端可选发送。</p>
+</li>
+<li><p>Sec-WebSocket-Extensions</p>
+<p>  用于协商本次连接要使用的 WebSocket 扩展:客户端发送支持的扩展，服务器通过返回相同的首部确认自己支持一或多个扩展。这个 header 客户端可选发送。服务端如果都不支持，不会导致握手失败，但是此次连接不能使用任何扩展。</p>
+</li>
+</ul>
+<h2 id="WebSocket-协议扩展"><a href="#WebSocket-协议扩展" class="headerlink" title="WebSocket 协议扩展"></a>WebSocket 协议扩展</h2><ul>
+<li><p>多路复用扩展(A Multiplexing Extension for WebSockets)<br>这个扩展可以通过握手时建立的 TCP 连接建立多条独立的逻辑上的 WebSocket ( logical connection )通道，每个虚拟的 WebSocket 通道以非零的 ID 标注，0 号通道为控制通道。</p>
+<p>  在 header 里添加 “Sec-WebSocket-Extensions: mux”开启多路复用扩展。在实际上的 WebSocket 连接建立的时候就会自动多开启一条 multiplexed connection。只有客户端通过 AddChannelRequest 才能够创建新的 logical WebSocket 连接。这样接受者就能 ( May ) 并行处理不同通道发送过来的 frames 了。</p>
+<p>  每个通道（除了控制通道）会分配一个定额来限制（默认 64 KB）每个 frame 的 Payload 大小。详文：A Multiplexing Extension for WebSockets</p>
+</li>
+<li><p>压缩扩展(Compression Extensions fos’sr WebSocket)<br>给 WebSocket 协议增加了压缩功能。（例如 x-webkit-deflate-frame 扩展）</p>
+</li>
+</ul>
+<p>如果不进行多路复用扩展，每个 WebSocket 连接都只能独享专门的一个 TCP 连接，而且当遇到一个巨大的消息分成多个帧的时候，容易产生队首阻塞的情况。队首阻塞会导致延迟，所以分成多个帧能尽量的小是关键。不过在进行了多路复用扩展以后，多个连接复用一个 TCP 连接，每个信道依旧会存在队首阻塞的问题。除了多路复用，还要进行多路并行发送消息。</p>
+<p>如果通过 HTTP2 进行 WebSocket 传输，性能会更好一点，毕竟 HTTP2 原生就支持了流的多路复用。利用 HTTP2 的分帧机制进行 WebSocket 的分帧，多个 WebSocket 可以在同一个会话中传输。</p>
+<h2 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h2><p>由一个或多个 Frame 组成。</p>
+<p>frame 格式以及每个字段具体含义请参阅 RFC 文档。</p>
+<h2 id="数据传递"><a href="#数据传递" class="headerlink" title="数据传递"></a>数据传递</h2><p>一旦 WebSocket 客户端，服务端建立连接后，后续的操作都是基于数据帧的传递。</p>
+<p>WebSocket 根据 opcode 来区分操作的类型。</p>
+<h2 id="连接保持-心跳"><a href="#连接保持-心跳" class="headerlink" title="连接保持 + 心跳"></a>连接保持 + 心跳</h2><p>客户端与服务端之间长时间没有数据往来，但仍然需要保持连接。这个时候，可以采用心跳来实现。</p>
+<p>ping<br>pong<br>ping, pong 对应的 opcode 分别是 0x9, 0xA。</p>
+<h2 id="关闭连接"><a href="#关闭连接" class="headerlink" title="关闭连接"></a>关闭连接</h2><p>发送或接受一个 close 的 opcode 0x8. 启动 WebSocket 关闭阶段。如果一个终端在收到 close frame 之前没有发出 close frame, 那么这个终端就必须返回一个 close frame. 如果当前有正在传输的 frame, 那么 close frame 将会在这个 frame 传输结束后再发出。<strong>并不能保证终端在发出 close frame 后还能传输数据。</strong></p>
+<h1 id="WebSocket-和-Proxy"><a href="#WebSocket-和-Proxy" class="headerlink" title="WebSocket 和 Proxy"></a>WebSocket 和 Proxy</h1><p>详文：【HTML5 Web Sockets 与代理服务器交互](<a href="http://www.infoq.com/cn/articles/Web-Sockets-Proxy-Servers" target="_blank" rel="noopener">http://www.infoq.com/cn/articles/Web-Sockets-Proxy-Servers</a>)</p>
+<p><img src="https://res.infoq.com/articles/Web-Sockets-Proxy-Servers/en/resources/websockets2.png" alt="proxy"></p>
+<p>可见全部走 secure 肯定是没问题的，使用 https 绕过中间代理，非 https 会导致 http 消息头丢失导致握手升级失败。</p>
+<h1 id="STOMP"><a href="#STOMP" class="headerlink" title="STOMP"></a>STOMP</h1><p>协议详见：<a href="https://stomp.github.io/stomp-specification-1.2.html" target="_blank" rel="noopener">STOMP</a></p>
+<p>STOMP 是属于消息队列的一种协议，很多 MQ 都已经支持。为浏览器和服务器之间的通信增加适当的消息语义。高层协议便于定义应用间所发送消息的语义。WebSocket 协议过于底层，并没有规定 payload 格式，而对于 Pub/Sub 模式，使用 STOMP 最合适不为过了。</p>
+<h2 id="STOMP-Frame-格式"><a href="#STOMP-Frame-格式" class="headerlink" title="STOMP Frame 格式"></a>STOMP Frame 格式</h2><pre><code>COMMAND
+header1 : value1
+header2 : value2
+Body^@
+</code></pre><h2 id="STOMP-的优势："><a href="#STOMP-的优势：" class="headerlink" title="STOMP 的优势："></a>STOMP 的优势：</h2><p>Use of STOMP as a sub-protocol enables the Spring Framework and Spring Security to provide a richer programming model vs using raw WebSockets.</p>
+<h1 id="SockJS"><a href="#SockJS" class="headerlink" title="SockJS"></a>SockJS</h1><p>详情：<a href="https://github.com/sockjs/sockjs-client" target="_blank" rel="noopener">SockJs ( Github – The MIT License )</a></p>
+<p>SockJS 是一个 JS 库，它提供了一个类似于 WebSocket 的东西，SockJS 提供了一个连贯的、跨浏览器的 JS API, 他在浏览器和服务器之间创建了一个低延迟、全双工、跨域通信的通道。</p>
+<p>SockJS 的一大好处在于提供了浏览器兼容性，优先使用 Native WebSocket, 在不支持 WebSocket 的浏览器中会自动降为各个浏览器专门的方式（streaming or polling）。一些浏览器缺少对于 WebSocket的支持，因此，回退选项是必要的，Spring 框架也提供了基于 SockJS 协议的透明回退选项。</p>
+<p>SockJS 限制，SockJS 不允许对于一个域名同时打开多个 SockJS 连接。原因是  <a href="https://stackoverflow.com/questions/985431/max-parallel-http-connections-in-a-browser" target="_blank" rel="noopener">browsers don’t allow opening more than two outgoing connections to a single domain</a>. 单个 SockJS  session 需要两个连接——一个是下载数据，一个是发送信息。同时打开第二个 SockJS session 会阻塞。解决方法：使用子域名。</p>
+<p>SockJS 也支持了 multiplex extension ：<a href="https://github.com/sockjs/websocket-multiplex" target="_blank" rel="noopener">sockjs websocket-multiplex</a>, <a href="https://github.com/sockjs/sockjs-client/wiki/How-to-compose-apps-using-WebSockets" target="_blank" rel="noopener">How to do proper multiplexing on WebSockets or on SockJS</a></p>
+<h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><p>详文见：<a href="https://docs.spring.io/spring/docs/5.0.0.BUILD-SNAPSHOT/spring-framework-reference/html/websocket.html" target="_blank" rel="noopener">spring framework 5.0.0.BUILD-SNAPSHOT</a></p>
+<p>spring 4.x 就已经支持 WebSocket, STOMP, SockJS.</p>
+<h1 id="Message-Queue"><a href="#Message-Queue" class="headerlink" title="Message Queue"></a>Message Queue</h1><h2 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h2><p><a href="https://www.rabbitmq.com/web-stomp.html" target="_blank" rel="noopener">RabbitMQ Web STOMP Plugin</a></p>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><p>自有一套协议</p>
+<h2 id="ActiveMQ"><a href="#ActiveMQ" class="headerlink" title="ActiveMQ"></a>ActiveMQ</h2><p><a href="http://activemq.apache.org/stomp.html" target="_blank" rel="noopener">ActiveMQ STOMP Protocol Support</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/network/" rel="tag"># network</a>
+          
+            <a href="/tags/WebSocket/" rel="tag"># WebSocket</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/19/写在明天前/" rel="next" title="写在明天前">
+                <i class="fa fa-chevron-left"></i> 写在明天前
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/30646562?v=4&s=400"
+                alt="VATALU" />
+            
+              <p class="site-author-name" itemprop="name">VATALU</p>
+              <p class="site-description motion-element" itemprop="description">Like a fish out of water</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/VATALU" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:shayugu@outlook.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/5674276731/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="微博" rel="external nofollow"><i class="fa fa-fw fa-weibo"></i>微博</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/vate-73" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>知乎</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.shuosc.org/" title="SHU OSC" target="_blank">SHU OSC</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前后端实时通讯解决方案比较"><span class="nav-number">1.</span> <span class="nav-text">前后端实时通讯解决方案比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-short-polling"><span class="nav-number">1.1.</span> <span class="nav-text">HTTP short-polling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-long-polling"><span class="nav-number">1.2.</span> <span class="nav-text">HTTP long-polling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Streaming"><span class="nav-number">1.3.</span> <span class="nav-text">Streaming</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Iframe-Streaming"><span class="nav-number">1.3.1.</span> <span class="nav-text">Iframe Streaming</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AJAX-multipart-streaming-XHR-Streaming"><span class="nav-number">1.3.2.</span> <span class="nav-text">AJAX multipart streaming (XHR Streaming)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flash-Streaming"><span class="nav-number">1.3.3.</span> <span class="nav-text">Flash Streaming</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Server-Sent-Events"><span class="nav-number">1.4.</span> <span class="nav-text">Server-Sent Events</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSE-的优势"><span class="nav-number">1.4.1.</span> <span class="nav-text">SSE 的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSE-的劣势"><span class="nav-number">1.4.2.</span> <span class="nav-text">SSE 的劣势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket"><span class="nav-number">1.5.</span> <span class="nav-text">WebSocket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Supported-transports-by-browser-html-served-from-http-or-https"><span class="nav-number">1.6.</span> <span class="nav-text">Supported transports, by browser (html served from http:// or https://)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket-vs-SSE"><span class="nav-number">1.7.</span> <span class="nav-text">WebSocket vs SSE</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WebSocket-Protocol"><span class="nav-number">2.</span> <span class="nav-text">WebSocket Protocol</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#握手"><span class="nav-number">2.1.</span> <span class="nav-text">握手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket-协议扩展"><span class="nav-number">2.2.</span> <span class="nav-text">WebSocket 协议扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据格式"><span class="nav-number">2.3.</span> <span class="nav-text">数据格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据传递"><span class="nav-number">2.4.</span> <span class="nav-text">数据传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接保持-心跳"><span class="nav-number">2.5.</span> <span class="nav-text">连接保持 + 心跳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭连接"><span class="nav-number">2.6.</span> <span class="nav-text">关闭连接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WebSocket-和-Proxy"><span class="nav-number">3.</span> <span class="nav-text">WebSocket 和 Proxy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STOMP"><span class="nav-number">4.</span> <span class="nav-text">STOMP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#STOMP-Frame-格式"><span class="nav-number">4.1.</span> <span class="nav-text">STOMP Frame 格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STOMP-的优势："><span class="nav-number">4.2.</span> <span class="nav-text">STOMP 的优势：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SockJS"><span class="nav-number">5.</span> <span class="nav-text">SockJS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring"><span class="nav-number">6.</span> <span class="nav-text">Spring</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Message-Queue"><span class="nav-number">7.</span> <span class="nav-text">Message Queue</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ"><span class="nav-number">7.1.</span> <span class="nav-text">RabbitMQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka"><span class="nav-number">7.2.</span> <span class="nav-text">Kafka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ActiveMQ"><span class="nav-number">7.3.</span> <span class="nav-text">ActiveMQ</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">VATALU</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Muse</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 --> 
+<script type="text/javascript" src="/js/src/love.js"></script>

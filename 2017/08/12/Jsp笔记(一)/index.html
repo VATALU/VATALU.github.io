@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Pacifico:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="小鱼笔记Jsp基本语法">
+<meta name="keywords" content="Java,web,Jsp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jsp笔记(一)">
+<meta property="og:url" content="http://yoursite.com/2017/08/12/Jsp笔记(一)/index.html">
+<meta property="og:site_name" content="VATALU">
+<meta property="og:description" content="小鱼笔记Jsp基本语法">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://i4.nbimg.com/604261/32f861b1e9d9a03a.png">
+<meta property="og:image" content="http://i4.nbimg.com/604261/3bbaf6af14934335.png">
+<meta property="og:image" content="http://i1.fuimg.com/604261/8e5034d627ea5bef.png">
+<meta property="og:image" content="http://i1.fuimg.com/604261/5c23e49b61adb79f.png">
+<meta property="og:image" content="http://i1.fuimg.com/604261/63741961d62404e8.png">
+<meta property="og:image" content="http://i2.fuimg.com/604261/03f324259eaaacc1.png">
+<meta property="og:image" content="http://i2.fuimg.com/604261/243886cd68422ab6.png">
+<meta property="og:image" content="http://i4.fuimg.com/604261/080ab4b03bc47c7b.png">
+<meta property="og:updated_time" content="2018-07-26T03:29:33.440Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jsp笔记(一)">
+<meta name="twitter:description" content="小鱼笔记Jsp基本语法">
+<meta name="twitter:image" content="http://i4.nbimg.com/604261/32f861b1e9d9a03a.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="VATALU" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/12/Jsp笔记(一)/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Jsp笔记(一) | VATALU</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b484bf6b466e022d7cb1161fde6a0eaf";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">VATALU</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i>归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/Jsp笔记(一)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="VATALU">
+      <meta itemprop="description" content="Like a fish out of water">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/30646562?v=4&s=400">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="VATALU">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Jsp笔记(一)
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-12 11:58:56" itemprop="dateCreated datePublished" datetime="2017-08-12T11:58:56+08:00">2017-08-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-26 11:29:33" itemprop="dateModified" datetime="2018-07-26T11:29:33+08:00">2018-07-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Material/" itemprop="url" rel="index"><span itemprop="name">Material</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="note info"><p>小鱼笔记<br>Jsp基本语法  </p></div>
+<a id="more"></a>
+<h2 id="指令标识"><a href="#指令标识" class="headerlink" title="指令标识"></a>指令标识</h2><p>语法：</p>
+<blockquote>
+<p>&lt;%@ 指令名 属性 1=“属性1的值” 属性2=“属性2的值”%&gt;</p>
+</blockquote>
+<h3 id="指令名："><a href="#指令名：" class="headerlink" title="指令名："></a>指令名：</h3><ul>
+<li>page 定义整个页面的相关属性</li>
+<li>include 静态包含另外一个Jsp页面</li>
+<li>taglib 自定义</li>
+</ul>
+<blockquote>
+<p>&lt;%@ page import=”java.util.*”%&gt;</p>
+</blockquote>
+<blockquote>
+<p>&lt;%@ include file =”path”%&gt;</p>
+</blockquote>
+<blockquote>
+<p>&lt;%@ taglib %&gt;</p>
+</blockquote>
+<h2 id="表达式："><a href="#表达式：" class="headerlink" title="表达式："></a>表达式：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= 表达式 %&gt;</span><br></pre></td></tr></table></figure>
+<p>%与=之间不能有空格，但=后可以有<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;% String manager=<span class="string">"mr"</span>;%&gt;</span><br><span class="line">管理员： &lt;%= manager%&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><h3 id="html注释"><a href="#html注释" class="headerlink" title="html注释"></a>html注释</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--...--&gt;</span><br></pre></td></tr></table></figure>
+<p>客户端可见，下载源代码</p>
+<h3 id="隐藏注释："><a href="#隐藏注释：" class="headerlink" title="隐藏注释："></a>隐藏注释：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%-- ..... --%&gt;</span><br></pre></td></tr></table></figure>
+<p>隐藏注释不能够从源代码中看到</p>
+<h3 id="动态注释："><a href="#动态注释：" class="headerlink" title="动态注释："></a>动态注释：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- &lt;%=<span class="keyword">new</span> Date()%&gt; --&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="包含文件标识："><a href="#包含文件标识：" class="headerlink" title="包含文件标识："></a>包含文件标识：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:include page=<span class="string">"url"</span> flush=<span class="string">"false|true"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><figcaption><span>指令存在很大差别</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1.  include指令通过file 属性指定被包含的文件，而且file属性不支持任何表达式，而jsp:include通过page属性指定被包含的文件，而且page属性支持JSP表达式。</span><br><span class="line">2.  include指令是先把被包含文件原封不动的插入到包含页中，然后再有JSP编译器编译成一个Java文件，使用Jsp:include时，分别编译</span><br><span class="line">3.  include 不能有重名的变量和方法 jsp:include中可以</span><br><span class="line"></span><br><span class="line">## 请求转发标识</span><br><span class="line">```Java</span><br><span class="line">&lt;jsp:forward page=&quot;url&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="传递参数标识"><a href="#传递参数标识" class="headerlink" title="传递参数标识"></a>传递参数标识</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:param name=<span class="string">"参数名"</span> value=<span class="string">"参数值"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<p>例子<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;jsp:forward page=<span class="string">"modify.jsp"</span>&gt;</span><br><span class="line">	&lt;jsp:param name=<span class="string">"userid"</span> value=<span class="string">"7"</span>/&gt;</span><br><span class="line">&lt;/jsp:forward&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="9个JSP内置对象"><a href="#9个JSP内置对象" class="headerlink" title="9个JSP内置对象"></a>9个JSP内置对象</h2><h3 id="request"><a href="#request" class="headerlink" title="request"></a>request</h3><p>处理HTTP中的各项参数</p>
+<h4 id="访问请求参数"><a href="#访问请求参数" class="headerlink" title="访问请求参数"></a>访问请求参数</h4><p>在页面中定义<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href="delete.jsp?id=1&amp;user="&gt;删除&lt;/a&gt;</span><br></pre></td></tr></table></figure></p>
+<p>在delete.jsp中获取参数的方法getParameter<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">String id  = request.getParameter(<span class="string">"id"</span>);</span><br><span class="line">String user = request.getParameter(<span class="string">"user"</span>);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure></p>
+<p>id为1，user为空但不为null</p>
+<h4 id="解决乱码"><a href="#解决乱码" class="headerlink" title="解决乱码"></a>解决乱码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= <span class="keyword">new</span> String(request.getParameter(<span class="string">"name"</span>).getBytes(<span class="string">"ISO-8859-1"</span>)，<span class="string">"UTF-8"</span>)%&gt;</span><br></pre></td></tr></table></figure>
+<p>所有的request的请求都是通过ISO-8859-1的，而在此页面采用的是UTF-8编码方式，通过上面这种方式可以防止乱码。</p>
+<h4 id="作用域中管理属性"><a href="#作用域中管理属性" class="headerlink" title="作用域中管理属性"></a>作用域中管理属性</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.setAttribute(String name,Object obiect);</span><br></pre></td></tr></table></figure>
+<p>name变量在request的范围内有效<br>对应方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.getAttribute(<span class="string">"String name"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>getAttribute()方法可以提取请求转发页面setAttribute()传的一些数据，然后对数据进行处理。</p>
+<h4 id="获取cookie"><a href="#获取cookie" class="headerlink" title="获取cookie"></a>获取cookie</h4><p>getCookies()<br>getName()<br>getValue()<br>addCookie()</p>
+<h4 id="获取客户端信息"><a href="#获取客户端信息" class="headerlink" title="获取客户端信息"></a>获取客户端信息</h4><p><img src="http://i4.nbimg.com/604261/32f861b1e9d9a03a.png" alt="requestscommon"></p>
+<h4 id="显示国际化信息"><a href="#显示国际化信息" class="headerlink" title="显示国际化信息"></a>显示国际化信息</h4><p>request对象中的getLocale()和getLocales()方法允许获得本地语言<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">Java.util.Locale locale=request.getLocale();</span><br><span class="line">String str = <span class="string">""</span>;</span><br><span class="line"><span class="keyword">if</span>(locale.equals(java.util.Locale.US))&#123;</span><br><span class="line">	str=<span class="string">"Hello,welcome to access our company's web!"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(locale.equals(java.util.Locale.CHINA))&#123;</span><br><span class="line">	str=<span class="string">"您好，欢饮访问我们公司网站!"</span>;</span><br><span class="line">&#125;</span><br><span class="line">%&gt;</span><br><span class="line">&lt;%=str%&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="response"><a href="#response" class="headerlink" title="response"></a>response</h3><p>响应客户请求，向客户端输出信息</p>
+<h4 id="重定向网页"><a href="#重定向网页" class="headerlink" title="重定向网页"></a>重定向网页</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.sendRedirect(String path);</span><br></pre></td></tr></table></figure>
+<p>通过sendRedirect()方法将网页重定向到另一个页面，支持将地址重新定向到不同主机上，这一点与转发不同。在浏览器上重新得到网址，然后重新发送请求链接。重定向操作后，request中的属性全部失效，并且开始一个新的request对象</p>
+<h4 id="处理HTTP开头"><a href="#处理HTTP开头" class="headerlink" title="处理HTTP开头"></a>处理HTTP开头</h4><h5 id="禁用缓存"><a href="#禁用缓存" class="headerlink" title="禁用缓存"></a>禁用缓存</h5><p>适用于一些安全性较高的网站<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">response.setHeader(<span class="string">"Cache-Control"</span>,<span class="string">"no-store"</span>);</span><br><span class="line">response.setDateHeader(<span class="string">"Expires"</span>,<span class="number">0</span>);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure></p>
+<h5 id="页面自动刷新"><a href="#页面自动刷新" class="headerlink" title="页面自动刷新"></a>页面自动刷新</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">response.setHeader(<span class="string">"refresh"</span>,<span class="string">"10"</span>);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<p>每隔十秒钟刷新一次</p>
+<h5 id="定时跳转网页"><a href="#定时跳转网页" class="headerlink" title="定时跳转网页"></a>定时跳转网页</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">response.setHeader(<span class="string">"refresh"</span>,<span class="string">"5;URL=login.jsp"</span>);</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<p>5秒后跳向指定网页</p>
+<h4 id="设置输出缓冲"><a href="#设置输出缓冲" class="headerlink" title="设置输出缓冲"></a>设置输出缓冲</h4><p>只有满足一下三种情况之一才会把缓冲区的内容写到客户端</p>
+<ol>
+<li>Jsp页面的输出信息已经全部写入到了缓冲区</li>
+<li>缓冲区已满</li>
+<li>在Jsp页面中，调用了response对象的flushBuffer()方法或out对象的flush()方法</li>
+</ol>
+<p>response中对缓冲区进行配置的方法<br><img src="http://i4.nbimg.com/604261/3bbaf6af14934335.png" alt="response"></p>
+<h3 id="session"><a href="#session" class="headerlink" title="session"></a>session</h3><p>通过session可以在应用程序的Web页面间进行跳转时，保存用户的状态，使整个用户会话会一直存在下去，直到关闭浏览器，例如，Tomcat服务器默认为30分钟，不过这个时间可以通过编写程序进行修改</p>
+<h4 id="创建及获取客户的会话"><a href="#创建及获取客户的会话" class="headerlink" title="创建及获取客户的会话"></a>创建及获取客户的会话</h4><p>将信息保存在session范围内<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.setAttribute().setAttribute(String name,Object obj)</span><br></pre></td></tr></table></figure></p>
+<p>获取保存在session范围内的信息<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.getAttribute(String name)</span><br></pre></td></tr></table></figure></p>
+<p>返回的是Object类型，所以要添加toString()方法或强制转换<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String user=(String)session.getAttribute(<span class="string">"username"</span>);</span><br><span class="line">String user1=session.getAttribute(<span class="string">"username"</span>).toString();</span><br></pre></td></tr></table></figure></p>
+<h4 id="从会话中移动指定的绑定对象"><a href="#从会话中移动指定的绑定对象" class="headerlink" title="从会话中移动指定的绑定对象"></a>从会话中移动指定的绑定对象</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.removeAttribute(String name)</span><br></pre></td></tr></table></figure>
+<h4 id="销毁session"><a href="#销毁session" class="headerlink" title="销毁session"></a>销毁session</h4><p>虽然session对象过一段时间会自动消失，但对于某些实时统计在线人数的网站（例如聊天室）,所以要手动销毁session来统计准确人数<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.invalidate();</span><br></pre></td></tr></table></figure></p>
+<h4 id="会话超时管理"><a href="#会话超时管理" class="headerlink" title="会话超时管理"></a>会话超时管理</h4><p>如果用户超过session存在时间后操作，会报错，为了避免这种现象，所以要对session的有效性进行判断</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方法</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">getlastAccessedTime()</td>
+<td style="text-align:center">返回客户端最后一次与会话相关联的请求时间</td>
+</tr>
+<tr>
+<td style="text-align:center">getMaxInactiveInterval()</td>
+<td style="text-align:center">以秒为单位返回一个会话内两个请求最大的时间间隔</td>
+</tr>
+<tr>
+<td style="text-align:center">setMaxInactiveInterval()</td>
+<td style="text-align:center">以秒为单位设置session的有效时间</td>
+</tr>
+</tbody>
+</table>
+<h3 id="application"><a href="#application" class="headerlink" title="application"></a>application</h3><p>application 用于保存所有应用程序中的公有数据。它在服务器启动时自动创建，在服务器停止时销毁。比session的生命周期更长</p>
+<h4 id="访问应用程序初始化参数"><a href="#访问应用程序初始化参数" class="headerlink" title="访问应用程序初始化参数"></a>访问应用程序初始化参数</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">application.getInitParameter(String name);</span><br></pre></td></tr></table></figure>
+<p>返回已命名的参数值<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">application.getInitParameterNames();</span><br></pre></td></tr></table></figure></p>
+<p>返回所有已定义的应用程序初始化参数名的枚举<br>实例：应用getAttributeNames()方法获取web.xml中定义的全部应用程序初始化参数名，并循环输出<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">"java.util.*"</span>%&gt;</span><br><span class="line">&lt;%</span><br><span class="line">Enumeration enema = application.getInitParameterNames();</span><br><span class="line"><span class="keyword">while</span>(enema.hasMoreElements())&#123;</span><br><span class="line">	String name = (String)enema.nextElement();</span><br><span class="line">    String value = application.getInitPatameter(name);</span><br><span class="line">    out.println(name+<span class="string">":"</span>);</span><br><span class="line">    out.println(value);</span><br><span class="line">&#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="管理应用程序环境属性"><a href="#管理应用程序环境属性" class="headerlink" title="管理应用程序环境属性"></a>管理应用程序环境属性</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">方法</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">getAttributeNames()</td>
+<td style="text-align:center">获取所有application对象使用的属性名</td>
+</tr>
+<tr>
+<td style="text-align:center">getAttribute(String name)</td>
+<td style="text-align:center">从application对象中获取指定对象名</td>
+</tr>
+<tr>
+<td style="text-align:center">getAttribute(String key,Object obj)</td>
+<td style="text-align:center">使用指定名称和指定对象在application对象中进行关联</td>
+</tr>
+<tr>
+<td style="text-align:center">removeAttribute(String name)</td>
+<td style="text-align:center">从application对象中去掉指定名称的属性</td>
+</tr>
+</tbody>
+</table>
+<h3 id="out"><a href="#out" class="headerlink" title="out"></a>out</h3><p>out对象用于在web浏览器内输出信息，并且管理应用服务器上的输出缓冲区</p>
+<h4 id="print-方法"><a href="#print-方法" class="headerlink" title="print()方法"></a>print()方法</h4><p>向客户端浏览器输出信息。通过该方法向客户端浏览器输出信息与使用JSP表达式输出信息相同<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">out.print(<span class="string">"明日科技"</span>)</span><br><span class="line">%&gt;</span><br><span class="line">&lt;%= <span class="string">"明日科技"</span>%&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="println-方法"><a href="#println-方法" class="headerlink" title="println()方法"></a>println()方法</h4><p>与print方法不同，在输出内容后，会输出一个换行符</p>
+<h4 id="管理影响缓冲"><a href="#管理影响缓冲" class="headerlink" title="管理影响缓冲"></a>管理影响缓冲</h4><p>out对象比较重要的一个功能<br><img src="http://i1.fuimg.com/604261/8e5034d627ea5bef.png" alt="outmethod"></p>
+<h3 id="pageContext"><a href="#pageContext" class="headerlink" title="pageContext"></a>pageContext</h3><p>获取会话范围，通过它可以获取JSP页面的request,session,application,exception<br><img src="http://i1.fuimg.com/604261/5c23e49b61adb79f.png" alt="pageContextmethod1"><br><img src="http://i1.fuimg.com/604261/63741961d62404e8.png" alt="pageContextmethod2"></p>
+<h3 id="config"><a href="#config" class="headerlink" title="config"></a>config</h3><p>读取web.xml配置信息的config对象，通过getServletConfig()方法可以获取一个config对象，当以个Servlet初始化时，容器吧某些信息通过config对象传给这个Servlet<br><img src="http://i2.fuimg.com/604261/03f324259eaaacc1.png" alt="configmethod"></p>
+<h3 id="page"><a href="#page" class="headerlink" title="page"></a>page</h3><p>应答或请求page对象，可以用来当作this关键词的别名<br><img src="http://i2.fuimg.com/604261/243886cd68422ab6.png" alt="pagemethod"></p>
+<h3 id="exception"><a href="#exception" class="headerlink" title="exception"></a>exception</h3><p>获取异常信息，只有在page指令中设置为isErrorPage属性值为true的页面中才可以被使用，在一般的JSP页面中使用该对象无法编译JSP文件。<br><img src="http://i4.fuimg.com/604261/080ab4b03bc47c7b.png" alt="exceptionmethod"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+            <a href="/tags/Jsp/" rel="tag"># Jsp</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/03/写在无聊前/" rel="next" title="写在无聊前">
+                <i class="fa fa-chevron-left"></i> 写在无聊前
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/13/相对路径与绝对路径/" rel="prev" title="相对路径与绝对路径">
+                相对路径与绝对路径 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/30646562?v=4&s=400"
+                alt="VATALU" />
+            
+              <p class="site-author-name" itemprop="name">VATALU</p>
+              <p class="site-description motion-element" itemprop="description">Like a fish out of water</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/VATALU" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:shayugu@outlook.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/5674276731/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="微博" rel="external nofollow"><i class="fa fa-fw fa-weibo"></i>微博</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/vate-73" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>知乎</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.shuosc.org/" title="SHU OSC" target="_blank">SHU OSC</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#指令标识"><span class="nav-number">1.</span> <span class="nav-text">指令标识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指令名："><span class="nav-number">1.1.</span> <span class="nav-text">指令名：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表达式："><span class="nav-number">2.</span> <span class="nav-text">表达式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-number">3.</span> <span class="nav-text">注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#html注释"><span class="nav-number">3.1.</span> <span class="nav-text">html注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏注释："><span class="nav-number">3.2.</span> <span class="nav-text">隐藏注释：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态注释："><span class="nav-number">3.3.</span> <span class="nav-text">动态注释：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包含文件标识："><span class="nav-number">4.</span> <span class="nav-text">包含文件标识：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传递参数标识"><span class="nav-number">5.</span> <span class="nav-text">传递参数标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9个JSP内置对象"><span class="nav-number">6.</span> <span class="nav-text">9个JSP内置对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#request"><span class="nav-number">6.1.</span> <span class="nav-text">request</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#访问请求参数"><span class="nav-number">6.1.1.</span> <span class="nav-text">访问请求参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决乱码"><span class="nav-number">6.1.2.</span> <span class="nav-text">解决乱码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作用域中管理属性"><span class="nav-number">6.1.3.</span> <span class="nav-text">作用域中管理属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取cookie"><span class="nav-number">6.1.4.</span> <span class="nav-text">获取cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取客户端信息"><span class="nav-number">6.1.5.</span> <span class="nav-text">获取客户端信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示国际化信息"><span class="nav-number">6.1.6.</span> <span class="nav-text">显示国际化信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#response"><span class="nav-number">6.2.</span> <span class="nav-text">response</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重定向网页"><span class="nav-number">6.2.1.</span> <span class="nav-text">重定向网页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理HTTP开头"><span class="nav-number">6.2.2.</span> <span class="nav-text">处理HTTP开头</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#禁用缓存"><span class="nav-number">6.2.2.1.</span> <span class="nav-text">禁用缓存</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#页面自动刷新"><span class="nav-number">6.2.2.2.</span> <span class="nav-text">页面自动刷新</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#定时跳转网页"><span class="nav-number">6.2.2.3.</span> <span class="nav-text">定时跳转网页</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置输出缓冲"><span class="nav-number">6.2.3.</span> <span class="nav-text">设置输出缓冲</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#session"><span class="nav-number">6.3.</span> <span class="nav-text">session</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建及获取客户的会话"><span class="nav-number">6.3.1.</span> <span class="nav-text">创建及获取客户的会话</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从会话中移动指定的绑定对象"><span class="nav-number">6.3.2.</span> <span class="nav-text">从会话中移动指定的绑定对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#销毁session"><span class="nav-number">6.3.3.</span> <span class="nav-text">销毁session</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#会话超时管理"><span class="nav-number">6.3.4.</span> <span class="nav-text">会话超时管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#application"><span class="nav-number">6.4.</span> <span class="nav-text">application</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#访问应用程序初始化参数"><span class="nav-number">6.4.1.</span> <span class="nav-text">访问应用程序初始化参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理应用程序环境属性"><span class="nav-number">6.4.2.</span> <span class="nav-text">管理应用程序环境属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#out"><span class="nav-number">6.5.</span> <span class="nav-text">out</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#print-方法"><span class="nav-number">6.5.1.</span> <span class="nav-text">print()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#println-方法"><span class="nav-number">6.5.2.</span> <span class="nav-text">println()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理影响缓冲"><span class="nav-number">6.5.3.</span> <span class="nav-text">管理影响缓冲</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pageContext"><span class="nav-number">6.6.</span> <span class="nav-text">pageContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#config"><span class="nav-number">6.7.</span> <span class="nav-text">config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#page"><span class="nav-number">6.8.</span> <span class="nav-text">page</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exception"><span class="nav-number">6.9.</span> <span class="nav-text">exception</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">VATALU</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Muse</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 --> 
+<script type="text/javascript" src="/js/src/love.js"></script>

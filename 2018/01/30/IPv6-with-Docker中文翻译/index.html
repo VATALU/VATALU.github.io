@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Pacifico:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="老师的项目要在Ipv6环境下跑，结果发现中文版却并没有对此篇文章的翻译，本瓜皮就来翻译一下。原文地址">
+<meta name="keywords" content="Docker,network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPv6 with Docker中文翻译">
+<meta property="og:url" content="http://yoursite.com/2018/01/30/IPv6-with-Docker中文翻译/index.html">
+<meta property="og:site_name" content="VATALU">
+<meta property="og:description" content="老师的项目要在Ipv6环境下跑，结果发现中文版却并没有对此篇文章的翻译，本瓜皮就来翻译一下。原文地址">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-26T03:31:06.863Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IPv6 with Docker中文翻译">
+<meta name="twitter:description" content="老师的项目要在Ipv6环境下跑，结果发现中文版却并没有对此篇文章的翻译，本瓜皮就来翻译一下。原文地址">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="VATALU" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/30/IPv6-with-Docker中文翻译/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>IPv6 with Docker中文翻译 | VATALU</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b484bf6b466e022d7cb1161fde6a0eaf";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">VATALU</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i>归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/IPv6-with-Docker中文翻译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="VATALU">
+      <meta itemprop="description" content="Like a fish out of water">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/30646562?v=4&s=400">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="VATALU">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">IPv6 with Docker中文翻译
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-01-30 00:07:55" itemprop="dateCreated datePublished" datetime="2018-01-30T00:07:55+08:00">2018-01-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-07-26 11:31:06" itemprop="dateModified" datetime="2018-07-26T11:31:06+08:00">2018-07-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Material/" itemprop="url" rel="index"><span itemprop="name">Material</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="note info"><p>老师的项目要在Ipv6环境下跑，结果发现中文版却并没有对此篇文章的翻译，本瓜皮就来翻译一下。<br><a href="https://docs.docker.com/engine/userguide/networking/default_network/ipv6/" target="_blank" rel="noopener">原文地址</a>  </p></div>
+<a id="more"></a>
+<blockquote>
+<p>The information in this section explains IPv6 with the Docker default bridge. This is a bridge network named bridge created automatically when you install Docker.</p>
+</blockquote>
+<p>这篇文章通过 Docker default bridge 来解释 IPv6 。这是一个 bridge 网络在你安装 Docker 的时候就自动创建。</p>
+<blockquote>
+<p>As we are running out of IPv4 addresses the IETF has standardized an IPv4 successor, Internet Protocol Version 6 , in RFC 2460. Both protocols, IPv4 and IPv6, reside on layer 3 of the OSI model.</p>
+</blockquote>
+<p>当我们的 IPv4 地址用尽的时候，IETF 在 RFC 2460 已经制定了一个 IPv4 的继承者———— IPv6，这两个协议都位于 OSI model(Open Systems Interconnection model) 的第三层。</p>
+<h1 id="How-IPv6-works-on-Docker"><a href="#How-IPv6-works-on-Docker" class="headerlink" title="How IPv6 works on Docker"></a>How IPv6 works on Docker</h1><blockquote>
+<p>By default, the Docker server configures the container network for IPv4 only. You can enable IPv4/IPv6 dualstack support by running the Docker daemon with the –ipv6 flag. Docker will set up the bridge docker0 with the IPv6 link-local address fe80::1.</p>
+</blockquote>
+<p>默认情况下， Docker server 只配置了这个容器的 IPv4 网络. 你可以同时使用 IPv4/IPv6 通过添加 –ipv6 执行 Docker 进程 。Docker 会设置 bridge docker0 通过 IPv6 链接本地地址 fe80::1。</p>
+<blockquote>
+<p>By default, containers that are created will only get a link-local IPv6 address. To assign globally routable IPv6 addresses to your containers you have to specify an IPv6 subnet to pick the addresses from. Set the IPv6 subnet via the –fixed-cidr-v6 parameter when starting Docker daemon:</p>
+</blockquote>
+<p>默认情况下，创建的容器只会得到一个链接本地 Ipv6 地址。为了能够分配可全球路由的 IPv6 地址给你的容器，你不得不指定一个 IPv6 子网去建立地址表。当 Docker 进程启动时，通过 –fixed-cidr-v6 参数设置 IPv6 子网。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dockerd --ipv6 --fixed-cidr-v6="2001:db8:1::/64"</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>The subnet for Docker containers should at least have a size of /80. This way an IPv6 address can end with the container’s MAC address and you prevent NDP neighbor cache invalidation issues in the Docker layer.</p>
+</blockquote>
+<p>Docker 容器的子网至少具有 /80 的形式。这样 IPv6 地址就能够以容器的 MAC 地址结尾并且防止在 Docker 层 NDP 缓存失效问题。</p>
+<blockquote>
+<p>With the –fixed-cidr-v6 parameter set Docker will add a new route to the routing table. Further IPv6 routing will be enabled (you may prevent this by starting dockerd with –ip-forward=false):</p>
+</blockquote>
+<p>通过 –fixed-cidr-v6 参数设置 Docker 会在路由表增加一个新路由。更多的 IPv6 路由将会启用（你通过用 –ip-forward=false 启动 Docker 来防止这种事情的发生）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ip -6 route add 2001:db8:1::/64 dev docker0</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span> sysctl net.ipv6.conf.default.forwarding=1</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span> sysctl net.ipv6.conf.all.forwarding=1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>All traffic to the subnet 2001:db8:1::/64 will now be routed via the docker0 interface.</p>
+</blockquote>
+<p>所有到 2001:db8:1::/64 子网的路由都会通过 docker0 接口路由。</p>
+<blockquote>
+<p>Be aware that IPv6 forwarding may interfere with your existing IPv6 configuration: If you are using Router Advertisements to get IPv6 settings for your host’s interfaces you should set accept_ra to 2. Otherwise IPv6 enabled forwarding will result in rejecting Router Advertisements. E.g., if you want to configure eth0 via Router Advertisements you should set:</p>
+</blockquote>
+<p>请注意 IPv6 转发会与 现存的 IPv6 配置连接：如果你正使用路由器广播来为你的主机接口获得 IPv6 设置，你应该设置 accept_ra=2 。否则 IPv6 转发会导致拒绝路由器广播。比如，如果你想配置 eth0 通过路由器广播，你应该这么设置。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sysctl net.ipv6.conf.eth0.accept_ra=2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Every new container will get an IPv6 address from the defined subnet. Further a default route will be added on eth0 in the container via the address specified by the daemon option –default-gateway-v6 if present, otherwise via fe80::1:</p>
+</blockquote>
+<p>所有的容器都会从定义的子网获得一个 IPv6 地址。一个默认的路由将会增加到 eth0 如果存在进程选项 –default-gateway-v6，通过被特定化的地址，否则默认通过 fe80::1: </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -it ubuntu bash -c "ip -6 addr show dev eth0; ip -6 route show"</span><br><span class="line"></span><br><span class="line">15: eth0: &lt;BROADCAST,UP,LOWER_UP&gt; mtu 1500</span><br><span class="line">   inet6 2001:db8:1:0:0:242:ac11:3/64 scope global</span><br><span class="line">      valid_lft forever preferred_lft forever</span><br><span class="line">   inet6 fe80::42:acff:fe11:3/64 scope link</span><br><span class="line">      valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">2001:db8:1::/64 dev eth0  proto kernel  metric 256</span><br><span class="line">fe80::/64 dev eth0  proto kernel  metric 256</span><br><span class="line">default via fe80::1 dev eth0  metric 1024</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>In this example the Docker container is assigned a link-local address with the network suffix /64 (here: fe80::42:acff:fe11:3/64) and a globally routable IPv6 address (here: 2001:db8:1:0:0:242:ac11:3/64). The container will create connections to addresses outside of the 2001:db8:1::/64 network via the link-local gateway at fe80::1 on eth0.</p>
+</blockquote>
+<p>在这个例子当中 Docker 容器通过网络后缀 /64 (here: fe80::42:acff:fe11:3/64)和一个全局 IPv6 路由地址(here: 2001:db8:1:0:0:242:ac11:3/64)被分配了一个本地链接地址。通过这个本地链接网关 fe80::1，这个容器将会创造通往 2001:db8:1::/64 之外的网络地址连接。</p>
+<blockquote>
+<p>Often servers or virtual machines get a /64 IPv6 subnet assigned (e.g. 2001:db8:23:42::/64). In this case you can split it up further and provide Docker a /80 subnet while using a separate /80 subnet for other applications on the host:</p>
+</blockquote>
+<p>通常服务器或者虚拟机得到一个 /64 IPv6 子网分配 (比如： 2001:db8:23:42::/64)。当你想要给别的主机上的应用使用单独的 /80 子网，你可以分开它并提供给 Docker /80 子网</p>
+<blockquote>
+<p>In this setup the subnet 2001:db8:23:42::/64 with a range from 2001:db8:23:42:0:0:0:0 to 2001:db8:23:42:ffff:ffff:ffff:ffff is attached to eth0, with the host listening at 2001:db8:23:42::1. The subnet 2001:db8:23:42:1::/80 with an address range from 2001:db8:23:42:1:0:0:0 to 2001:db8:23:42:1:ffff:ffff:ffff is attached to docker0 and will be used by containers.</p>
+</blockquote>
+<p> 2001:db8:23:42::/64 子网从  2001:db8:23:42:0:0:0:0 到 2001:db8:23:42:ffff:ffff:ffff:ffff 被赋给 eth0，在 2001:db8:23:42::1 被监听。子网 2001:db8:23:42:1::/80 从 2001:db8:23:42:1:0:0:0 to 2001:db8:23:42:1:ffff:ffff:ffff 将会被赋给 docker0 并且将会被容器使用。</p>
+<h2 id="Using-NDP-proxying"><a href="#Using-NDP-proxying" class="headerlink" title="Using NDP proxying"></a>Using NDP proxying</h2><blockquote>
+<p>If your Docker host is the only part of an IPv6 subnet but does not have an IPv6 subnet assigned, you can use NDP proxying to connect your containers to the internet via IPv6. If the host with IPv6 address 2001:db8::c001 is part of the subnet 2001:db8::/64 and your IaaS provider allows you to configure the IPv6 addresses 2001:db8::c000 to 2001:db8::c00f, your network configuration may look like the following:</p>
+</blockquote>
+<p>如果你的 Docker 主机仅是唯一的 IPv6 子网，没有 IPv6 子网被分配，你可以用 NDP peoxying 去连接你的容器到网络。如果主机有着 2001:db8::c001 地址是 2001:db8::/64 的一部分并且你的 IaaS 提供商允许你配置 IPv6 地址 2001:db8::c000 ~ 2001:db8::c00f，你的网络配置应像下面一样。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ip -6 addr show</span><br><span class="line"></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536</span><br><span class="line">    inet6 ::1/128 scope host</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qlen 1000</span><br><span class="line">    inet6 2001:db8::c001/64 scope global</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::601:3fff:fea1:9c01/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>To slit up the configurable address range into two subnets 2001:db8::c000/125 and 2001:db8::c008/125, use the following daemon.json settings. The first subnet is used by non-Docker processes on the host, and the second is used by Docker.</p>
+</blockquote>
+<p>将配置的地址分开成  2001:db8::c000/125 与 2001:db8::c008/125，用下面的 daemon.json。第一个子网会被用在主机上，而第二个会被 Docker 使用。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"ipv6"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"fixed-cidr-v6"</span>: <span class="string">"2001:db8::c008/125"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>The Docker subnet is within the subnet managed by your router and connected to eth0. All containers with addresses assigned by Docker are expected to be found within the router subnet, and the router can communicate with these containers directly.</p>
+</blockquote>
+<p>Docker 子网被路由管理并且连接到 eth0。所有的具有这个地址的容器被  Docker 分配并且会在路由的子网里被找到。路由器可以和这些容器直接通信。</p>
+<h2 id="IPv6-NDP-proxying"><a href="#IPv6-NDP-proxying" class="headerlink" title="IPv6 NDP proxying"></a>IPv6 NDP proxying</h2><blockquote>
+<p>When the router wants to send an IPv6 packet to the first container, it transmits a neighbor solicitation request, asking “Who has 2001:db8::c009?” However, no host on the subnet has the address; the container with the address is hidden behind the Docker host. The Docker host therefore must listen for neighbor solicitation requests and respond that it is the device with the address. This functionality is called the NDP Proxy and is handled by the kernel on the host machine. To enable the NDP proxy, execute the following command:</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sysctl net.ipv6.conf.eth0.proxy_ndp=1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Next, add the container’s IPv6 address to the NDP proxy table:</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ip -6 neigh add proxy 2001:db8::c009 dev eth0</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>From now on, the kernel answers neighbor solicitation addresses for this address on the device eth0. All traffic to this IPv6 address is routed through the Docker host, which forwards it to the container’s network according to its routing table via the docker0 device:</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ip -6 route show</span><br><span class="line"></span><br><span class="line">2001:db8::c008/125 dev docker0  metric 1</span><br><span class="line">2001:db8::/64 dev eth0  proto kernel  metric 256</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Execute the ip -6 neigh add proxy … command for every IPv6 address in your Docker subnet. Unfortunately there is no functionality for adding a whole subnet by executing one command. An alternative approach would be to use an NDP proxy daemon such as ndppd.</p>
+</blockquote>
+<h1 id="Docker-IPv6-cluster"><a href="#Docker-IPv6-cluster" class="headerlink" title="Docker IPv6 cluster"></a>Docker IPv6 cluster</h1><h2 id="Switched-network-environment"><a href="#Switched-network-environment" class="headerlink" title="Switched network environment"></a>Switched network environment</h2><blockquote>
+<p>Using routable IPv6 addresses allows you to realize communication between containers on different hosts. Let’s have a look at a simple Docker IPv6 cluster example:</p>
+</blockquote>
+<p>IPv6 switched network example</p>
+<blockquote>
+<p>The Docker hosts are in the 2001:db8:0::/64 subnet. Host1 is configured to provide addresses from the 2001:db8:1::/64 subnet to its containers. It has three routes configured:</p>
+</blockquote>
+<ul>
+<li>Route all traffic to 2001:db8:0::/64 via eth0</li>
+<li>Route all traffic to 2001:db8:1::/64 via docker0</li>
+<li>Route all traffic to 2001:db8:2::/64 via Host2 with IP 2001:db8::2</li>
+</ul>
+<blockquote>
+<p>Host1 also acts as a router on OSI layer 3. When one of the network clients tries to contact a target that is specified in Host1’s routing table Host1 forwards the traffic accordingly. It acts as a router for all networks it knows: 2001:db8::/64, 2001:db8:1::/64, and 2001:db8:2::/64.</p>
+</blockquote>
+<blockquote>
+<p>On Host2 we have nearly the same configuration. Host2’s containers gets IPv6 addresses from 2001:db8:2::/64. Host2 has three routes configured:</p>
+</blockquote>
+<ul>
+<li>Route all traffic to 2001:db8:0::/64 via eth0</li>
+<li>Route all traffic to 2001:db8:2::/64 via docker0</li>
+<li>Route all traffic to 2001:db8:1::/64 via Host1 with IP 2001:db8:0::1</li>
+</ul>
+<blockquote>
+<p>The difference to Host1 is that the network 2001:db8:2::/64 is directly attached to Host2 via its docker0 interface whereas Host2 reaches 2001:db8:1::/64 via Host1’s IPv6 address 2001:db8::1.</p>
+</blockquote>
+<blockquote>
+<p>This way every container can contact every other container. The containers Container1-<em> share the same subnet and contact each other directly. The traffic between Container1-</em> and Container2-* are routed via Host1 and Host2 because those containers do not share the same subnet.</p>
+</blockquote>
+<blockquote>
+<p>In a switched environment every host needs to know all routes to every subnet. You always need to update the hosts’ routing tables once you add or remove a host to the cluster.</p>
+</blockquote>
+<blockquote>
+<p>Every configuration in the diagram that is shown below the dashed line is handled by Docker: The docker0 bridge IP address configuration, the route to the Docker subnet on the host, the container IP addresses and the routes on the containers. The configuration above the line is up to the user and can be adapted to the individual environment.</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+            <a href="/tags/network/" rel="tag"># network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/31/elasticsearch在Centos上部署/" rel="next" title="Elasticsearch-6.0.0在Centos 7.3上部署">
+                <i class="fa fa-chevron-left"></i> Elasticsearch-6.0.0在Centos 7.3上部署
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/28/Java-一组常量应该如何存储？/" rel="prev" title="Java 一组常量应该如何存储？">
+                Java 一组常量应该如何存储？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/30646562?v=4&s=400"
+                alt="VATALU" />
+            
+              <p class="site-author-name" itemprop="name">VATALU</p>
+              <p class="site-description motion-element" itemprop="description">Like a fish out of water</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/VATALU" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:shayugu@outlook.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://weibo.com/5674276731/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="微博" rel="external nofollow"><i class="fa fa-fw fa-weibo"></i>微博</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/vate-73" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>知乎</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.shuosc.org/" title="SHU OSC" target="_blank">SHU OSC</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#How-IPv6-works-on-Docker"><span class="nav-number">1.</span> <span class="nav-text">How IPv6 works on Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-NDP-proxying"><span class="nav-number">1.1.</span> <span class="nav-text">Using NDP proxying</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-NDP-proxying"><span class="nav-number">1.2.</span> <span class="nav-text">IPv6 NDP proxying</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker-IPv6-cluster"><span class="nav-number">2.</span> <span class="nav-text">Docker IPv6 cluster</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Switched-network-environment"><span class="nav-number">2.1.</span> <span class="nav-text">Switched network environment</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">VATALU</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Muse</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<!-- 页面点击小红心 --> 
+<script type="text/javascript" src="/js/src/love.js"></script>
