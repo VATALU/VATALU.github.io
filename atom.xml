@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-07-26T03:31:50.530Z</updated>
+  <updated>2018-07-29T13:36:33.912Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java 函数式编程解析</title>
+    <link href="http://yoursite.com/2018/07/27/Java-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E8%A7%A3%E6%9E%90/"/>
+    <id>http://yoursite.com/2018/07/27/Java-函数式编程解析/</id>
+    <published>2018-07-27T12:55:46.000Z</published>
+    <updated>2018-07-29T13:36:33.912Z</updated>
+    
+    <content type="html"><![CDATA[<div class="note default"><p>前段日子看了看泛型，现在再来看两手 Java 8 引入的函数式编程。</p></div><a id="more"></a><p>Java 的函数式编程是通过 interface 来实现的，对于 Java 这样的语言通过使用 SAM 接口来实现函数式主要是为了简化 Java FP 的入门门槛，Java 并没有采用引入新关键字的方式（例如：C# 引入了 delegation 关键字以及复杂的委托机制），这也使得 Java 当中 <code>函数</code> 不是一等公民，无法脱离 <code>class</code> 的怀抱，这也使得 FP 带来的便捷性受到了一定的损失，（Java 的函数式与真正的函数式语言相比，写起来复杂了很多）通过 SAM 实现函数式是在 Java 环境下的妥协，本文不会对于这一点做过深的讨论。</p><h1 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h1><p>函数式总离不开 Lambda 表达式，Lambda 表达式可以替代匿名内部类，以及在标注了函数式接口 <code>@FunctionalInterface</code> 的地方使用。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">()-&gt;System.out.println(<span class="string">"HelloWorld"</span>);</span><br><span class="line">event-&gt;System.out.println(<span class="string">"button clicked"</span>);</span><br><span class="line">(x,y)-&gt;x+y;</span><br><span class="line">(Long x, Long y)-&gt;x+y;</span><br><span class="line">()-&gt;&#123;</span><br><span class="line">    System.out.println(<span class="string">"Hello"</span>);</span><br><span class="line">    System.out.println(<span class="string">"World"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>可以看到 Lambda 表达式一般是以 ()-&gt;{} 形式，前面填参数，后面填函数语句。Lambda 传进来的参数必须是 final 的或者是既定是不可变的，所以 Lambda 表达式不能改变传进来的参数的值，这也是符合函数式的设计原则的——函数不能有副作用</p><p>前面也提到了 Lambda 可以用在所有传入被 <code>@FunctionalInterface</code> 注解的接口的地方。例如以下形式：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//所定义的函数式接口</span></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Consumer</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在外部写一个函数，函数的参数为此接口。</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(<span class="keyword">final</span> T t, <span class="keyword">final</span> Consumer&lt;T&gt; consumer)</span> </span>&#123;</span><br><span class="line">    consumer.accept(t)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用这个函数时直接可以传入 Lambda 表达式</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    accept(<span class="string">"HelloWorld"</span>, System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>结果输出:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HelloWorld</span><br></pre></td></tr></table></figure></p><p>上面代码中的 Consumer 接口其实本体位于 JDK 的 java.util.function 包中，JDK 提供了一些基础的函数式接口，下面介绍几个基本的接口。</p><table><thead><tr><th style="text-align:left">接口</th><th style="text-align:left">参数</th><th style="text-align:left">返回类型</th></tr></thead><tbody><tr><td style="text-align:left"><code>Predicate&lt;T&gt;</code></td><td style="text-align:left">T</td><td style="text-align:left">boolean</td></tr><tr><td style="text-align:left"><code>Consumer&lt;T&gt;</code></td><td style="text-align:left">T</td><td style="text-align:left">void</td></tr><tr><td style="text-align:left"><code>Function&lt;T,R&gt;</code></td><td style="text-align:left">T</td><td style="text-align:left">R</td></tr><tr><td style="text-align:left"><code>Supplier&lt;T&gt;</code></td><td style="text-align:left">None</td><td style="text-align:left">T</td></tr><tr><td style="text-align:left"><code>UnaryOperator&lt;T&gt;</code></td><td style="text-align:left">T</td><td style="text-align:left">T</td></tr></tbody></table><p>很多情况下使用这些接口其实就够用了，这里也看到了使用 &lt;&gt; 来进行类型推断，这也是之前 Lambda 例子当中为什么可以不用写类型的原因。</p><h1 id="stream"><a href="#stream" class="headerlink" title="stream"></a>stream</h1><p>Java 8 中更激动人心的特性就是 stream 了，它能够简化 collection 以及 map 的操作，下面给出个 stream 的实例。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> count  = allArtists.stream()</span><br><span class="line">                        .filter(artist -&gt; artist.isFrom(<span class="string">"London"</span>))</span><br><span class="line">                        .count();</span><br></pre></td></tr></table></figure><p>上述例子计算了所有来自伦敦的艺术家，这里有两个重要的概念引入，一是惰性求值，二十及早求值， filter 当中的 Lambda 表达式时惰性的，只有在调用了及早求值（这里是调用 <code>count()</code> ）时，才会作出计算，例如下面这个例子：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">allArtists.stream()</span><br><span class="line">            .filter(artist -&gt; &#123;</span><br><span class="line">                                System.out.println(<span class="string">"HelloWorld"</span>);</span><br><span class="line">                                artist.isFrom(<span class="string">"London"</span>);</span><br><span class="line">                              &#125;)</span><br></pre></td></tr></table></figure><p>这里并不会输出 <code>HelloWorld</code>，这两个概念在函数式编程语言当中以及习以为常了。 PS:上述的 Lambda 表达式是具有副作用的，它向控制台输出了信息。</p><p>stream 流中封装了很多接口，大部分都是高阶函数（接收或返回一个函数的函数）如 <code>filter</code>, <code>map</code> 等，stream 也对自动装箱做了优化，Integer 对象比 int 基本类型占用了更多的开销，但 stream 仅对整型，长整型和双精度浮点数进行了优化 <code>mapToLong</code>, <code>LongStream</code>。</p><h1 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h1><p>调用最具体的那个函数，包括函数前面，以及子类父类之间的关系，下面的例子会输出 <code>IntegerBiFunction</code>。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">overloadedMethod((x,y)-&gt;x+y);</span><br><span class="line"><span class="comment">//两个重载方法</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">overloadedMethod</span><span class="params">(BinaryOperator&lt;Integer&gt;)</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"BinaryOperator"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">overloadedMethod</span><span class="params">(IntegerBiFunction lambda)</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"IntegerBiFunction"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>但是下面的例子就不能通过编译，因为 IntPredicate 和 Predicate 在类型上都是匹配的，而上面这个例子之所以能编译通过是因为 IntegerBiFunction 是 BinaryOperator 的子类。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">overloadedMethod((x,y)-&gt;x+y);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">overloadedMethod</span><span class="params">(Predicate&lt;Integer&gt; predicate)</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Predicate"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">overloadedMethod</span><span class="params">(IntPredicate predicate)</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"IntPredicate"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="默认方法"><a href="#默认方法" class="headerlink" title="默认方法"></a>默认方法</h1><p>Java 8 为了向后兼容，所以在接口中可以定义 <code>default</code> 关键字，即默认方法，默认方法有一套玄学的重载机制…..</p><ul><li>类胜于接口。如果在继承链中有方法或抽象方法的声明，那么就可以忽略接口中定义的方法。</li><li>子类胜于父类。如果一个接口继承了另一个接口，且两个接口都定义了一个默认方法，那么子类中定义的方法胜出。</li><li>没有规则三。如果上面两条都不使用，子类要么需要实现该方法，要么将该方法声明为抽象方法。</li></ul><h1 id="方法引用"><a href="#方法引用" class="headerlink" title="方法引用"></a>方法引用</h1><p>第一个例子已经使用了方法引用 <code>System.out::println</code>, 在所有可以写成 <code>x-&gt;foo(x)</code> 的地方都可以使用 <code>A::foo</code> 替换，这样也使代码更加简洁，对于对象或者是类型名都可以使用。<del>其实这个东西也玄，有序列化和方法引用这个坑</del></p><h1 id="数据分块"><a href="#数据分块" class="headerlink" title="数据分块"></a>数据分块</h1><p>将一个 list 通过某些条件分成两个 list, 大概就是这么做的。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Map&lt;Boolean, List&lt;Artist&gt;&gt; bandsAndSolo(Stream&lt;Artist&gt; artists) &#123;</span><br><span class="line">    <span class="keyword">return</span> artists.collect(Collectors.partitioningBy(Artist::isSolo));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>partitioninBy 接收一个 Predicate 然后根据每个值传入后输出的布尔值进行二分类。</p><h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>Java 函数式核心库主要的化还有 stream 流的并行还没有讲了，以后用到了的时候再写篇吧，以及 Objects 和 Optional 类以后也讲讲。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note default&quot;&gt;&lt;p&gt;前段日子看了看泛型，现在再来看两手 Java 8 引入的函数式编程。&lt;/p&gt;&lt;/div&gt;
+    
+    </summary>
+    
+      <category term="Material" scheme="http://yoursite.com/categories/Material/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="Functional Program" scheme="http://yoursite.com/tags/Functional-Program/"/>
+    
+      <category term="source code" scheme="http://yoursite.com/tags/source-code/"/>
+    
+  </entry>
   
   <entry>
     <title>WebSocket 调研总结</title>
@@ -130,11 +156,11 @@
       <category term="Material" scheme="http://yoursite.com/categories/Material/"/>
     
     
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+      <category term="Functional Program" scheme="http://yoursite.com/tags/Functional-Program/"/>
     
       <category term="Reactor" scheme="http://yoursite.com/tags/Reactor/"/>
     
-      <category term="Functional Program" scheme="http://yoursite.com/tags/Functional-Program/"/>
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
     
   </entry>
   
@@ -251,9 +277,9 @@
     
       <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
     
-      <category term="Jsp" scheme="http://yoursite.com/tags/Jsp/"/>
-    
       <category term="web" scheme="http://yoursite.com/tags/web/"/>
+    
+      <category term="Jsp" scheme="http://yoursite.com/tags/Jsp/"/>
     
   </entry>
   
